@@ -1,6 +1,6 @@
+import api from "../services/api";
 import { useData } from "../components/PostProvider";
 import { useEffect } from "react";
-import api from "../services/api";
 
 export default function CreatePlaylist() {
   const {

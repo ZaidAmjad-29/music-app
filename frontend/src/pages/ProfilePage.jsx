@@ -1,8 +1,8 @@
-import { useData } from "../components/PostProvider";
 import Profile from "../components/Profile";
 import UserSongs from "../components/UserSongs";
 import UserPlaylists from "../components/UserPlaylists";
 import EditProfile from "../components/EditProfile";
+import { useData } from "../components/PostProvider";
 // import { useNavigate } from "react-router-dom";
 
 export default function ProfilePage() {

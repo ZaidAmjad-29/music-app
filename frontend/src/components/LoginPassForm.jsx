@@ -1,6 +1,6 @@
+import usePostActions from "../services/usePostActions";
 import { Link } from "react-router-dom";
 import { useData } from "../components/PostProvider";
-import usePostActions from "../services/usePostActions";
 
 export default function LoginPassForm() {
   const { signInform, handleChangeSignin } = useData();

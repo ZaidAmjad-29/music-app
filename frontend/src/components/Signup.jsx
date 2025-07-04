@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import usePostActions from "../services/usePostActions";
+import { Link } from "react-router-dom";
 import { useData } from "./PostProvider";
 
 export default function Signup() {
