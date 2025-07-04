@@ -1,4 +1,5 @@
 import { useData } from "./PostProvider";
+import { Trash } from "lucide-react";
 
 export default function CommentModal() {
   const {
@@ -9,40 +10,49 @@ export default function CommentModal() {
     setNewCommentText,
     newCommentText,
     handleSubmitComment,
+    user,
   } = useData();
+
   return (
     <>
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-        <div className="bg-white p-6 rounded shadow-lg w-full max-w-md relative">
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50">
+        <div className="relative bg-gray-900/80 backdrop-blur-lg rounded-2xl border border-gray-700/50 shadow-2xl w-full max-w-2xl p-8 text-white transition-all duration-300">
           <button
             onClick={handleCloseCommentsModal}
-            className="absolute top-2 right-3 text-gray-600 text-lg"
+            className="absolute top-4 right-5 text-gray-400 hover:text-red-500 transition-colors duration-200 text-xl"
           >
             ✕
           </button>
-          <h2 className="text-xl font-bold mb-2">
-            {commentsModalSong.title} - Comments
+          <h2 className="text-2xl font-bold mb-6 text-purple-400">
+            {commentsModalSong.title}
+            <span className="text-gray-400"> — Comments</span>
           </h2>
-          <div className="max-h-60 overflow-y-auto space-y-2 mb-3">
+          <div className="max-h-96 overflow-y-auto space-y-3 mb-5 pr-1 custom-scrollbar">
             {songComments.length === 0 ? (
               <p className="text-gray-500 text-sm">No comments yet.</p>
             ) : (
               songComments.map((c) => (
                 <div
                   key={c._id}
-                  className="bg-gray-100 p-2 rounded flex justify-between items-start"
+                  className="bg-gray-800/60 border border-gray-700/50 p-4 rounded-xl flex justify-between items-start hover:border-purple-500/30 transition-all duration-200"
                 >
                   <div>
-                    <p className="text-sm">
-                      <strong>{c.user.name}</strong>: {c.text}
+                    <p className="text-base">
+                      <span className="font-semibold text-purple-400">
+                        {c.user.name}
+                      </span>
+                      : <span className="text-gray-300">{c.text}</span>
                     </p>
                   </div>
-                  <button
-                    className="text-red-500 text-xs hover:underline"
-                    onClick={() => handleDeleteComment(c._id)}
-                  >
-                    Delete
-                  </button>
+                  {c.user._id === user.user._id && (
+                    <button
+                      className="text-red-500 hover:text-red-400 transition-colors duration-200"
+                      onClick={() => handleDeleteComment(c._id)}
+                      title="Delete"
+                    >
+                      <Trash className="w-5 h-5" />
+                    </button>
+                  )}
                 </div>
               ))
             )}
@@ -51,11 +61,12 @@ export default function CommentModal() {
             value={newCommentText}
             onChange={(e) => setNewCommentText(e.target.value)}
             placeholder="Write your comment..."
-            className="w-full border p-2 rounded text-sm mb-2"
+            className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl p-4 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-all duration-200 mb-4 resize-none"
+            rows={4}
           ></textarea>
           <button
             onClick={handleSubmitComment}
-            className="bg-green-500 text-white px-3 py-1 rounded w-full text-sm"
+            className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-base font-medium py-3 rounded-xl shadow-lg hover:shadow-purple-500/25 transition-all duration-200"
           >
             Submit Comment
           </button>

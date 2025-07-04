@@ -13,7 +13,10 @@ export default function ExplorePage() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Explore Songs</h1> <SongCard />
+      <h2 className="text-4xl font-bold text-white mb-8 bg-gradient-to-r from-white to-purple-200 bg-clip-text ">
+        Explore Songs
+      </h2>
+      <SongCard />
       <PlaylistCard />
       {commentsModalSong && <CommentModal />}
       {viewingPlaylist && <ViewPlaylist />}

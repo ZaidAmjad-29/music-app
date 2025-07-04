@@ -50,7 +50,7 @@ function PostProvider({ children }) {
   const [artist, setArtist] = useState("");
   const [genre, setGenre] = useState("");
   const [audioFile, setAudioFile] = useState(null);
-  //   const [coverImage, setCoverImage] = useState(null);
+  const [coverImage, setCoverImage] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -287,15 +287,28 @@ function PostProvider({ children }) {
     }
   };
 
+  const fetchSongs = async () => {
+    const res = await api.get("/songs");
+    setSongs(res.data.data);
+  };
+
   const handleSubmitSong = async (e) => {
     e.preventDefault();
+
+    if (!audioFile) {
+      alert("Please select an audio file");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("title", title);
     formData.append("artist", artist);
     formData.append("genre", genre);
     formData.append("audioFile", audioFile);
-    // if (coverImage) formData.append("coverImage", coverImage);
+
+    if (coverImage) {
+      formData.append("coverImage", coverImage);
+    }
 
     try {
       const res = await api.post("/song", formData, {
@@ -304,11 +317,11 @@ function PostProvider({ children }) {
         },
       });
 
-      console.log(res.data);
       alert("Song uploaded successfully!");
+      await fetchSongs();
     } catch (err) {
       console.error(err);
-      alert("Upload failed");
+      alert(err?.response?.data?.message || "Upload failed");
     }
   };
 
@@ -366,6 +379,7 @@ function PostProvider({ children }) {
         setViewingPlaylist,
         setSearchTerm,
         setShowPlaylistModal,
+        setCoverImage,
         handlePlay,
         openAddToPlaylistModal,
         handleSubmit,

@@ -7,11 +7,21 @@ exports.uploadSong = catchAsync(async (req, res, next) => {
   const { title, artist, genre } = req.body;
   const userId = req.user._id;
 
-  if (!req.file) {
-    return next(new AppError("audio file is required", 400));
+  const audioFile = req.files.audioFile ? req.files.audioFile[0] : null;
+  const coverImage = req.files.coverImage ? req.files.coverImage[0] : null;
+
+  if (!audioFile) {
+    return next(new AppError("Audio file is required", 400));
   }
 
-  const audioFilePath = `/public/songs/${req.file.filename}`;
+  const audioFilePath = `/public/songs/${audioFile.filename}`;
+  let coverImagePath = "";
+
+  if (coverImage) {
+    coverImagePath = `/public/coverImage/${coverImage.filename}`;
+  } else {
+    coverImagePath = "/public/songs/default_song_img.png";
+  }
 
   const newSong = await Song.create({
     title,
@@ -19,18 +29,20 @@ exports.uploadSong = catchAsync(async (req, res, next) => {
     genre,
     audioFile: audioFilePath,
     uploadedBy: userId,
+    coverImage: coverImagePath,
   });
 
-  const user = await User.findById(req.user._id);
+  const user = await User.findById(userId);
   user.uploadedSongs.push(newSong._id);
   await user.save();
 
   res.status(201).json({
     status: true,
-    message: "Song uploaded successfully with default cover",
+    message: "Song uploaded successfully",
     data: newSong,
   });
 });
+
 
 exports.getAllSongs = catchAsync(async (req, res, next) => {
   const songs = await Song.find()

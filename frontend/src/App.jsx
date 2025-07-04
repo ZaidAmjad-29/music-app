@@ -12,6 +12,7 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import PlaylistDetailPage from "./pages/PlaylistDetailPage";
 import AppLayout from "./components/AppLayout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import PageNotFound from "./pages/PageNotFound";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+        <Route path="*" element={<PageNotFound />} />
         <Route element={<AppLayout />}>
           <Route path="/explore" element={<ExplorePage />} />
           <Route path="/upload" element={<UploadPage />} />

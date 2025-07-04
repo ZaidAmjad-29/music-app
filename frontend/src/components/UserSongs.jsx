@@ -11,12 +11,13 @@ export default function UserSongs() {
             <img
               src={`http://localhost:4000${song.coverImage}`}
               alt={song.title}
-              className="w-full h-32 object-cover mb-1"
+              className="w-35 h-35 object-cover rounded mb-2"
             />
             <h4 className="font-medium">{song.title}</h4>
             <p className="text-sm text-gray-500">{song.artist}</p>
             <audio
               controls
+              style={{ width: "120px" }}
               className="mt-2 w-full"
               src={`http://localhost:4000${song.audioFile}`}
             />
