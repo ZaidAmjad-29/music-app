@@ -2,6 +2,7 @@ import { useData } from "./PostProvider";
 
 export default function ViewPlaylist() {
   const { setViewingPlaylist, viewingPlaylist } = useData();
+
   return (
     <>
       <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -31,17 +32,22 @@ export default function ViewPlaylist() {
             {viewingPlaylist.songs.map((song) => (
               <div
                 key={song._id}
-                className="flex items-center gap-2 border-b pb-1"
+                className="flex items-center gap-2 border-b pb-2"
               >
                 <img
                   src={`http://localhost:4000${song.coverImage}`}
                   alt={song.title}
                   className="w-12 h-12 object-cover rounded"
                 />
-                <div>
+                <div className="flex-1">
                   <p className="font-medium">{song.title}</p>
                   <p className="text-xs text-gray-500">{song.artist}</p>
                 </div>
+                <audio
+                  controls
+                  style={{ width: "120px" }} 
+                  src={`http://localhost:4000${song.audioFile}`}
+                />
               </div>
             ))}
           </div>

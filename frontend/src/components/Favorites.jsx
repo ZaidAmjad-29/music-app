@@ -16,6 +16,7 @@ export default function Favorites() {
             />
             <h3 className="font-semibold">{song.title}</h3>
             <p className="text-sm text-gray-500">{song.artist}</p>
+            <audio controls src={`http://localhost:4000${song.audioFile}`} />
             <button
               onClick={() => removeFavorite(song._id)}
               className="bg-red-500 text-white px-2 py-1 rounded mt-2"

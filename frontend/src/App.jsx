@@ -9,6 +9,7 @@ import FavoritesPage from "./pages/FavoritesPage";
 import SearchSongsPage from "./pages/SearchSongs";
 import ForgotPasswordPage from "./pages/ForgotPassword";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import PlaylistDetailPage from "./pages/PlaylistDetailPage";
 import AppLayout from "./components/AppLayout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -27,6 +28,7 @@ const App = () => {
           <Route path="/playlists" element={<MyPlaylistsPage />} />
           <Route path="/favorites" element={<FavoritesPage />} />
           <Route path="/search" element={<SearchSongsPage />} />
+          <Route path="/playlist/:id" element={<PlaylistDetailPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

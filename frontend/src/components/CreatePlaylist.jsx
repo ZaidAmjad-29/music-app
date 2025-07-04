@@ -1,6 +1,7 @@
 import api from "../services/api";
 import { useData } from "../components/PostProvider";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function CreatePlaylist() {
   const {
@@ -11,11 +12,12 @@ export default function CreatePlaylist() {
     setShowPlaylists,
   } = useData();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchPlaylists = async () => {
       try {
         const res = await api.get("/me");
-        console.log(res.data.data.user.playlists);
         setShowPlaylists(res.data.data.user.playlists);
       } catch (err) {
         console.error(err);
@@ -23,6 +25,10 @@ export default function CreatePlaylist() {
     };
     fetchPlaylists();
   }, []);
+
+  const handleClickPlaylist = (playlistId) => {
+    navigate(`/playlist/${playlistId}`);
+  };
 
   return (
     <>
@@ -45,7 +51,11 @@ export default function CreatePlaylist() {
         <h1 className="text-2xl font-bold mb-4">My Playlists</h1>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {showPlaylists.map((playlist) => (
-            <div key={playlist._id} className="border rounded p-3">
+            <div
+              key={playlist._id}
+              className="border rounded p-3 cursor-pointer hover:shadow-md transition"
+              onClick={() => handleClickPlaylist(playlist._id)}
+            >
               <h2 className="font-semibold">{playlist.name}</h2>
               <p className="text-gray-500">{playlist.songs.length} songs</p>
             </div>
