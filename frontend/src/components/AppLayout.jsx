@@ -51,7 +51,7 @@ import {
                       alt="Profile"
                       className="w-10 h-10 object-cover rounded-full border-2 border-gray-600 group-hover:border-purple-400 transition-colors duration-200"
                     />
-                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-black"></div>
+                    <div className="absolute  w-4 h-4  rounded-full border-2 border-black"></div>
                   </div>
                   <span className="hidden md:block text-gray-300 group-hover:text-white font-medium transition-colors duration-200">
                     {user?.user?.username || "My Profile"}

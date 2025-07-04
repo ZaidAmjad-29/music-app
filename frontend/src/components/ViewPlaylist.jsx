@@ -1,10 +1,37 @@
+import { useState } from "react";
 import { useData } from "./PostProvider";
-import { X } from "lucide-react";
+import { X, PlayCircle, Square } from "lucide-react";
 
 export default function ViewPlaylist() {
-  const { setViewingPlaylist, viewingPlaylist } = useData();
+  const { setViewingPlaylist, viewingPlaylist, songsInPlaylist } = useData();
+  const [playingId, setPlayingId] = useState(null);
+  const [audioInstance, setAudioInstance] = useState(null);
 
-  if (!viewingPlaylist) return null;
+  if (!songsInPlaylist) return null;
+
+  const handlePlay = (song) => {
+    if (audioInstance) {
+      audioInstance.pause();
+    }
+
+    const newAudio = new Audio(`http://localhost:4000${song.audioFile}`);
+    newAudio.play();
+    setAudioInstance(newAudio);
+    setPlayingId(song._id);
+
+    newAudio.onended = () => {
+      setPlayingId(null);
+      setAudioInstance(null);
+    };
+  };
+
+  const handleStop = () => {
+    if (audioInstance) {
+      audioInstance.pause();
+      setAudioInstance(null);
+      setPlayingId(null);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50">
@@ -17,17 +44,17 @@ export default function ViewPlaylist() {
         </button>
 
         <h2 className="text-2xl font-bold mb-2 bg-gradient-to-r from-white to-purple-300 bg-clip-text text-transparent">
-          {viewingPlaylist.name}
+          {songsInPlaylist.name}
         </h2>
 
         <p className="text-sm text-gray-400 mb-4">
-          By: {viewingPlaylist.user.name || "Unknown"}
+          By: {songsInPlaylist.user.name || "Unknown"}
         </p>
 
-        {viewingPlaylist.user.profileImage && (
+        {songsInPlaylist.user.profileImage && (
           <img
-            src={`http://localhost:4000${viewingPlaylist.user.profileImage}`}
-            alt={viewingPlaylist.user.name}
+            src={`http://localhost:4000${songsInPlaylist.user.profileImage}`}
+            alt={songsInPlaylist.user.name}
             className="w-16 h-16 object-cover rounded-full mb-4 border border-gray-600"
           />
         )}
@@ -35,7 +62,7 @@ export default function ViewPlaylist() {
         <h3 className="font-semibold mb-3">Songs in this playlist</h3>
 
         <div className="space-y-3">
-          {viewingPlaylist.songs.map((song) => (
+          {songsInPlaylist.songs.map((song) => (
             <div
               key={song._id}
               className="flex items-center gap-3 bg-gray-800/60 rounded-lg p-3 border border-gray-700/40 transition-all duration-300 hover:bg-gray-700/70"
@@ -51,11 +78,22 @@ export default function ViewPlaylist() {
                 </p>
                 <p className="text-xs text-gray-400">{song.artist}</p>
               </div>
-              <audio
-                controls
-                className="w-28 md:w-32 lg:w-36"
-                src={`http://localhost:4000${song.audioFile}`}
-              />
+
+              {playingId === song._id ? (
+                <button
+                  onClick={handleStop}
+                  className="flex items-center justify-center bg-purple-600 hover:bg-purple-700 text-white rounded-md px-3 py-2 transition"
+                >
+                  <Square className="w-5 h-5 mr-1" /> Stop
+                </button>
+              ) : (
+                <button
+                  onClick={() => handlePlay(song)}
+                  className="flex items-center justify-center bg-purple-600 hover:bg-purple-700 text-white rounded-md px-3 py-2 transition"
+                >
+                  <PlayCircle className="w-5 h-5 mr-1" /> Play
+                </button>
+              )}
             </div>
           ))}
         </div>

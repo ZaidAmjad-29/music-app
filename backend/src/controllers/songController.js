@@ -81,3 +81,4 @@ exports.searchSongs = catchAsync(async (req, res, next) => {
     data: songs,
   });
 });
+

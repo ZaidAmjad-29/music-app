@@ -12,33 +12,46 @@ export default function LoginPassForm() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-4 shadow rounded bg-white">
-      <h2 className="text-xl font-bold mb-4">Log In</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={signInform.email}
-          onChange={handleChangeSignin}
-          className="border p-2 w-full mb-2"
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={signInform.password}
-          onChange={handleChangeSignin}
-          className="border p-2 w-full mb-2"
-        />
-        <button
-          type="submit"
-          className="bg-green-500 text-white px-4 py-2 rounded w-full"
-        >
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-purple-900 to-black px-4">
+      <div className="w-full max-w-md bg-gray-900/70 backdrop-blur-lg border border-gray-700/40 rounded-2xl shadow-xl p-8">
+        <h2 className="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
           Log In
-        </button>
-        <Link to="/forgot-password">Reset your pasword</Link>
-      </form>
+        </h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={signInform.email}
+            onChange={handleChangeSignin}
+            className="w-full p-3 mb-4 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={signInform.password}
+            onChange={handleChangeSignin}
+            className="w-full p-3 mb-6 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+          />
+
+          <button
+            type="submit"
+            className="w-full py-3 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white font-bold rounded-lg transition-all duration-300"
+          >
+            Log In
+          </button>
+
+          <div className="text-center mt-4">
+            <Link
+              to="/forgot-password"
+              className="text-purple-400 hover:underline hover:text-pink-400 transition"
+            >
+              Forgot your password ? Reset it!
+            </Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

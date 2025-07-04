@@ -1,4 +1,4 @@
-import  usePostActions  from "../services/usePostActions.js";
+import usePostActions from "../services/usePostActions.js";
 import { useData } from "./PostProvider";
 
 export default function ResetPassForm() {
@@ -11,26 +11,30 @@ export default function ResetPassForm() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-4 shadow rounded bg-white">
-      <h2 className="text-xl font-bold mb-4">Reset Your Password</h2>
-      <form onSubmit={handleResetSubmit}>
-        <input
-          type="password"
-          placeholder="Enter New Password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          className="border p-2 w-full mb-2"
-        />
-        <button
-          type="submit"
-          className="bg-green-500 text-white px-4 py-2 rounded w-full"
-        >
-          Update Password
-        </button>
-      </form>
-      {statusMessage && (
-        <p className="mt-2 text-green-600 text-sm">{statusMessage}</p>
-      )}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-purple-900 to-black px-4">
+      <div className="w-full max-w-md bg-gray-900/70 backdrop-blur-lg border border-gray-700/40 rounded-2xl shadow-xl p-8">
+        <h2 className="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+          Reset Your Password
+        </h2>
+        <form onSubmit={handleResetSubmit}>
+          <input
+            type="password"
+            placeholder="Enter New Password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            className="w-full p-3 mb-4 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+          />
+          <button
+            type="submit"
+            className="w-full py-3 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white font-bold rounded-lg transition-all duration-300"
+          >
+            Update Password
+          </button>
+        </form>
+        {statusMessage && (
+          <p className="mt-4 text-green-400 text-center">{statusMessage}</p>
+        )}
+      </div>
     </div>
   );
 }

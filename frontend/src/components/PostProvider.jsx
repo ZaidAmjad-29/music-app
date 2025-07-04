@@ -13,6 +13,7 @@ function PostProvider({ children }) {
   const [showPlaylistModal, setShowPlaylistModal] = useState(false);
   const [myPlaylists, setMyPlaylists] = useState([]);
   const [selectedSongForPlaylist, setSelectedSongForPlaylist] = useState(null);
+  const [songsInPlaylist, setSongsInPlaylist] = useState([]);
 
   const [commentsModalSong, setCommentsModalSong] = useState(null);
   const [songComments, setSongComments] = useState([]);
@@ -34,6 +35,7 @@ function PostProvider({ children }) {
 
   const [showPlaylists, setShowPlaylists] = useState([]);
   const [newPlaylistName, setNewPlaylistName] = useState("");
+  const [playlistImage, setPlaylistImage] = useState(null);
 
   const [user, setUser] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -90,7 +92,7 @@ function PostProvider({ children }) {
     const fetchFavorites = async () => {
       try {
         const res = await api.get("/favorites");
-        console.log(res.data);
+        // console.log(res.data);
         setFavorites(res.data.data);
       } catch (err) {
         console.error(err);
@@ -175,6 +177,10 @@ function PostProvider({ children }) {
       await api.post(`/playlist/${playlistId}`, {
         songId: selectedSongForPlaylist._id,
       });
+      const res = await api.get(`/playlist/${playlistId}`);
+      console.log(res.data.data);
+      setSongsInPlaylist(res.data.data);
+
       alert("Song added to playlist!");
       setShowPlaylistModal(false);
     } catch (err) {
@@ -182,11 +188,17 @@ function PostProvider({ children }) {
       alert("Failed to add song to playlist");
     }
   };
+  const fetchFavoriteSongs = async () => {
+    const res = await api.get("/favorites");
+    setFavorites(res.data.data);
+  };
 
   const addToFavorites = async (songId) => {
     try {
       await api.post(`/favorite/${songId}`);
+
       alert("Added to favorites!");
+      await fetchFavoriteSongs();
     } catch (err) {
       console.error(err);
       alert("Failed to add to favorites");
@@ -232,9 +244,17 @@ function PostProvider({ children }) {
     }
   };
 
-  const handleViewPlaylist = (playlist) => {
+  const handleViewPlaylist = async (playlist) => {
+    try {
+      const res = await api.get(`/playlist/${playlist._id}`);
+      setSongsInPlaylist(res.data.data);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load playlist");
+    }
     setViewingPlaylist(playlist);
   };
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -242,26 +262,12 @@ function PostProvider({ children }) {
     setSignInForm({ ...signInform, [e.target.name]: e.target.value });
   };
 
-  const createPlaylist = async () => {
-    try {
-      const response = await api.post("/playlist", { name: newPlaylistName });
-      alert("Playlist created!");
-      setShowPlaylists((prev) => [...prev, response.data.data]);
-      setNewPlaylistName("");
-
-      const res = await api.get("/me");
-      setPlaylists(res.data.data.user.playlists);
-    } catch (err) {
-      console.error(err);
-      alert("Failed to create playlist");
-    }
-  };
-
   const handleEditClick = () => {
     setEditName(user.user.name);
     setEditBio(user.user.bio);
     setShowEditModal(true);
   };
+  
 
   const handleUpdateProfile = async () => {
     try {
@@ -359,6 +365,7 @@ function PostProvider({ children }) {
         artist,
         genre,
         audioFile,
+        songsInPlaylist,
         setAudioFile,
         setGenre,
         setArtist,
@@ -372,6 +379,7 @@ function PostProvider({ children }) {
         setShowPlaylists,
         setNewPlaylistName,
         setNewPassword,
+        setPlaylistImage,
         setStatusMessage,
         setEmail,
         setMessage,
@@ -386,7 +394,7 @@ function PostProvider({ children }) {
         addSongToPlaylist,
         addToFavorites,
         removeFavorite,
-        createPlaylist,
+        // createPlaylist,
         handleOpenCommentsModal,
         handleCloseCommentsModal,
         handleSubmitComment,

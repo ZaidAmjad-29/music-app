@@ -16,6 +16,8 @@ const port = process.env.PORT || 5001;
 connectDB();
 
 app.use("/public", express.static(path.join(__dirname, "/src/public")));
+app.use("/playlistImage", express.static(path.join(__dirname, "src/public/playlistImage")));
+
 
 
 app.use(express.urlencoded({ extended: true }));

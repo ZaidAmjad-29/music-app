@@ -4,7 +4,7 @@ const path = require("path");
 // Storage config
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "src/public/profiles"); 
+    cb(null, "src/public/playlistImage"); 
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);

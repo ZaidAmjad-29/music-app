@@ -1,12 +1,22 @@
 const Playlist = require("../models/playlistModel");
 const catchAsync = require("../utils/catchAsync");
-const User = require('../models/userModel')
+const User = require("../models/userModel");
 
 exports.createPlaylist = catchAsync(async (req, res, next) => {
   const { name } = req.body;
   const userId = req.user._id;
+  let imagePath = "";
+  if (req.file) {
+    imagePath = `/src/public/playlistImage/${req.file.filename}`;
+  } else {
+    imagePath = "/src/public/playlistImage/defaultPlaylistImage.png";
+  }
 
-  const playlist = await Playlist.create({ name, user: userId });
+  const playlist = await Playlist.create({
+    name,
+    user: userId,
+    playlistImage: imagePath,
+  });
 
   const user = await User.findById(req.user._id);
   user.playlists.push(playlist._id);
@@ -36,9 +46,9 @@ exports.addSongToPlaylist = catchAsync(async (req, res, next) => {
 
   const { songId } = req.body;
 
-  // if (playlist.songs.includes(songId)) {
-  //   return next(new AppError("Song already in playlist", 400));
-  // }
+  if (playlist.songs.includes(songId)) {
+    return next(new AppError("Song already in playlist", 400));
+  }
 
   playlist.songs.push(songId);
   await playlist.save();
@@ -81,3 +91,25 @@ exports.getUserPlaylists = catchAsync(async (req, res, next) => {
     data: playlists,
   });
 });
+
+exports.getPlaylistById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const playlist = await Playlist.findById(id)
+      .populate("songs")
+      .populate("user", "name profileImage bio");
+
+    if (!playlist) {
+      return res.status(404).json({ message: "Playlist not found" });
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: playlist,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch playlist" });
+  }
+};

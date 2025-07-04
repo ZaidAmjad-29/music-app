@@ -20,6 +20,10 @@ const playlistSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  playlistImage: {
+    type: String,
+    default: "/public/playlistImage/defaultPlaylistImage.png",
+  },
 });
 
 module.exports = mongoose.model("Playlist", playlistSchema);

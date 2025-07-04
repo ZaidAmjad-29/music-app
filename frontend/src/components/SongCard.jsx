@@ -27,15 +27,7 @@ export default function SongCard() {
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-            {/* Play Button Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <button
-                onClick={() => handlePlay(song)}
-                className="w-16 h-16 bg-purple-600 hover:bg-purple-700 rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-all duration-200"
-              >
-                <Play className="w-8 h-8 text-white ml-1" fill="currentColor" />
-              </button>
-            </div>
+           
           </div>
 
           {/* Song Info */}
