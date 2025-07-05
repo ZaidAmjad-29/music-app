@@ -1,7 +1,7 @@
 const express = require("express");
 const profileController = require("../controllers/profileController");
 const jwt = require("../middlewares/requestFilter");
-const upload = require("../utils/multer");
+const upload = require("../utils/profileImage");
 
 const router = express.Router();
 

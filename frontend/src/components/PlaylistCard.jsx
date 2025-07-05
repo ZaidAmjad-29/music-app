@@ -19,7 +19,7 @@ export default function PlaylistCard() {
               {/* Playlist Image */}
               <div className="relative w-full h-44 overflow-hidden">
                 <img
-                  src={`http://localhost:4000${playlist.coverImage}`}
+                  src={`http://localhost:4000${playlist.playlistImage}`}
                   alt={playlist.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />

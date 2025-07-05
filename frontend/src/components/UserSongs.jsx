@@ -30,6 +30,7 @@ export default function UserSongs() {
       setPlayingId(null);
     }
   };
+  console.log(user)
 
   return (
     <>

@@ -54,6 +54,8 @@ function PostProvider({ children }) {
   const [audioFile, setAudioFile] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -115,11 +117,14 @@ function PostProvider({ children }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
+
         const songsRes = await api.get("/songs");
         const playlistsRes = await api.get("/playlists");
 
         setSongs(songsRes.data.data);
         setPlaylists(playlistsRes.data.data);
+        setIsLoading(false);
       } catch (err) {
         console.error(err);
       }
@@ -267,7 +272,6 @@ function PostProvider({ children }) {
     setEditBio(user.user.bio);
     setShowEditModal(true);
   };
-  
 
   const handleUpdateProfile = async () => {
     try {
@@ -296,6 +300,8 @@ function PostProvider({ children }) {
   const fetchSongs = async () => {
     const res = await api.get("/songs");
     setSongs(res.data.data);
+
+    console.log(songs);
   };
 
   const handleSubmitSong = async (e) => {
@@ -325,11 +331,60 @@ function PostProvider({ children }) {
 
       alert("Song uploaded successfully!");
       await fetchSongs();
+      // const userRes = await api.get("/me");
+      // setUser(userRes.data.data);
     } catch (err) {
       console.error(err);
       alert(err?.response?.data?.message || "Upload failed");
     }
   };
+
+  const fetchAllPlaylists = async () => {
+    const res = await api.get("/playlists");
+    console.log(res.data);
+    setPlaylists(res.data.data);
+  };
+
+  const createPlaylist = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("name", newPlaylistName);
+      if (playlistImage) {
+        formData.append("playlistImage", playlistImage);
+      }
+      console.log(formData);
+
+      const response = await api.post("/playlist", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      alert("Playlist created!");
+      setShowPlaylists((prev) => [...prev, response.data.data]);
+      setNewPlaylistName("");
+      setPlaylistImage();
+
+      const res = await api.get("/me");
+      setShowPlaylists(res.data.data.user.playlists);
+      await fetchAllPlaylists();
+    } catch (err) {
+      console.error(err);
+      alert("Failed to create playlist");
+    }
+  };
+
+  useEffect(() => {
+    const fetchPlaylists = async () => {
+      try {
+        const res = await api.get("/me");
+        setShowPlaylists(res.data.data.user.playlists);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchPlaylists();
+  }, []);
 
   return (
     <PostContext.Provider
@@ -366,6 +421,10 @@ function PostProvider({ children }) {
         genre,
         audioFile,
         songsInPlaylist,
+        isLoading,
+        // newPlaylistName,
+        playlistImage,
+        setNewPlaylistName,
         setAudioFile,
         setGenre,
         setArtist,
@@ -377,7 +436,7 @@ function PostProvider({ children }) {
         setShowEditModal,
         setUser,
         setShowPlaylists,
-        setNewPlaylistName,
+        // setNewPlaylistName,
         setNewPassword,
         setPlaylistImage,
         setStatusMessage,
@@ -393,8 +452,8 @@ function PostProvider({ children }) {
         handleSubmit,
         addSongToPlaylist,
         addToFavorites,
+        createPlaylist,
         removeFavorite,
-        // createPlaylist,
         handleOpenCommentsModal,
         handleCloseCommentsModal,
         handleSubmitComment,

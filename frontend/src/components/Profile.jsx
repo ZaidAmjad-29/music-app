@@ -2,6 +2,7 @@ import { useData } from "./PostProvider";
 
 export default function Profile() {
   const { user, handleEditClick } = useData();
+  console.log(user)
 
   return (
     <div className="flex flex-col sm:flex-row items-center gap-6 bg-gray-900/60 border border-gray-700/30 backdrop-blur-lg rounded-2xl shadow-xl p-6 mb-8 transition-all">

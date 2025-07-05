@@ -1,5 +1,6 @@
 import { useData } from "./PostProvider";
 import { Play, ListPlus, Heart, MessageCircle, Music } from "lucide-react";
+import Loader from "./Loader";
 
 export default function SongCard() {
   const {
@@ -8,29 +9,28 @@ export default function SongCard() {
     openAddToPlaylistModal,
     addToFavorites,
     handleOpenCommentsModal,
+    // isLoading,
   } = useData();
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-8">
+      {/* {isLoading && <Loader />} */}
+
       {songs.map((song, idx) => (
         <div
           key={idx}
           className="group relative bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 hover:border-purple-500/50 transition-all duration-300 p-4 flex flex-col hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20"
         >
-          {/* Cover Image */}
           <div className="relative mb-4 overflow-hidden rounded-xl">
             <img
               src={`http://localhost:4000${song.coverImage}`}
               alt={song.title}
               className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
             />
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-           
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </div>
 
-          {/* Song Info */}
           <div className="flex-1 mb-4">
             <h3 className="text-lg font-bold text-white mb-1 line-clamp-1 group-hover:text-purple-400 transition-colors duration-200">
               {song.title}
@@ -40,9 +40,7 @@ export default function SongCard() {
             </p>
           </div>
 
-          {/* Action Buttons */}
           <div className="space-y-2">
-            {/* Primary Play Button */}
             <button
               onClick={() => handlePlay(song)}
               className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-sm py-2.5 rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-purple-500/25"
@@ -51,7 +49,6 @@ export default function SongCard() {
               Play Now
             </button>
 
-            {/* Secondary Actions */}
             <div className="grid grid-cols-3 gap-2">
               <button
                 onClick={() => openAddToPlaylistModal(song)}
@@ -79,12 +76,10 @@ export default function SongCard() {
             </div>
           </div>
 
-          {/* Floating Music Icon */}
           <div className="absolute top-3 right-3 w-8 h-8 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <Music className="w-4 h-4 text-purple-400" />
           </div>
 
-          {/* Glow Effect */}
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
         </div>
       ))}

@@ -5,63 +5,19 @@ import { useNavigate } from "react-router-dom";
 
 export default function CreatePlaylist() {
   const {
-    // newPlaylistName,
-    // setNewPlaylistName,
-    // createPlaylist,
     showPlaylists,
-    setShowPlaylists,
-    // setPlaylistImage,
+    newPlaylistName,
+    setNewPlaylistName,
+    setPlaylistImage,
+    createPlaylist,
   } = useData();
 
-  const [newPlaylistName, setNewPlaylistName] = useState("");
-  const [playlistImage, setPlaylistImage] = useState(null);
-
   const navigate = useNavigate();
-
-  const createPlaylist = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("name", newPlaylistName);
-      if (playlistImage) {
-        formData.append("playlistImage", playlistImage);
-      }
-      console.log(formData);
-
-      const response = await api.post("/playlist", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      alert("Playlist created!");
-      setShowPlaylists((prev) => [...prev, response.data.data]);
-      setNewPlaylistName("");
-      setPlaylistImage();
-
-      const res = await api.get("/me");
-      setShowPlaylists(res.data.data.user.playlists);
-    } catch (err) {
-      console.error(err);
-      alert("Failed to create playlist");
-    }
-  };
-
-  useEffect(() => {
-    const fetchPlaylists = async () => {
-      try {
-        const res = await api.get("/me");
-        setShowPlaylists(res.data.data.user.playlists);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchPlaylists();
-  }, []);
 
   const handleClickPlaylist = (playlistId) => {
     navigate(`/playlist/${playlistId}`);
   };
-  console.log(showPlaylists);
+  // console.log(showPlaylists);
 
   return (
     <div className="min-h-screen py-12">
@@ -77,12 +33,15 @@ export default function CreatePlaylist() {
             placeholder="New playlist name"
             className="flex-1 bg-gray-800/60 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
           />
-          <input
-            type="file"
-            accept="image/*"
-            className="bg-green-500"
-            onChange={(e) => setPlaylistImage(e.target.files[0])}
-          />
+          <label className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white rounded-lg cursor-pointer transition">
+            Upload Image
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => setPlaylistImage(e.target.files[0])}
+            />
+          </label>
 
           <button
             onClick={createPlaylist}
@@ -91,6 +50,11 @@ export default function CreatePlaylist() {
             Create
           </button>
         </div>
+        {showPlaylists.length === 0 && (
+          <div className="flex items-center justify-center min-h-screen text-gray-400 text-2xl">
+            Create your playlist!
+          </div>
+        )}
 
         <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-white to-purple-300 bg-clip-text text-transparent">
           My Playlists
@@ -103,7 +67,6 @@ export default function CreatePlaylist() {
               onClick={() => handleClickPlaylist(playlist._id)}
               className="group relative bg-gray-900/60 backdrop-blur-lg rounded-2xl border border-gray-700/40 shadow-xl overflow-hidden transition-all duration-500 hover:scale-105 hover:shadow-purple-500/30 cursor-pointer"
             >
-              {/* Placeholder cover image */}
               <div className="relative w-full h-36 overflow-hidden">
                 <img
                   src={`http://localhost:4000${playlist.playlistImage}`}

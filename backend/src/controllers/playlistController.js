@@ -7,9 +7,9 @@ exports.createPlaylist = catchAsync(async (req, res, next) => {
   const userId = req.user._id;
   let imagePath = "";
   if (req.file) {
-    imagePath = `/src/public/playlistImage/${req.file.filename}`;
+    imagePath = `/public/playlistImage/${req.file.filename}`;
   } else {
-    imagePath = "/src/public/playlistImage/defaultPlaylistImage.png";
+    imagePath = "/public/playlistImage/defaultPlaylistImage.png";
   }
 
   const playlist = await Playlist.create({
