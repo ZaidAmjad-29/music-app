@@ -20,6 +20,7 @@ export default function AppLayout() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const links = [
+    { to: "/explore", label: "Explore", icon: Compass, color: "text-blue-400" },
     { to: "/upload", label: "Upload", icon: Upload, color: "text-yellow-400" },
     {
       to: "/playlists",
@@ -33,7 +34,6 @@ export default function AppLayout() {
       icon: Heart,
       color: "text-red-400",
     },
-    { to: "/explore", label: "Explore", icon: Compass, color: "text-blue-400" },
     { to: "/search", label: "Search", icon: Search, color: "text-red-400" },
   ];
 

@@ -2,6 +2,7 @@ import { createContext, useContext } from "react";
 import { useState, useEffect } from "react";
 import useDebounce from "../services/hook";
 import api from "../services/api";
+import toast from "react-hot-toast";
 
 const PostContext = createContext();
 
@@ -107,10 +108,9 @@ function PostProvider({ children }) {
     try {
       await api.delete(`/favorite/${songId}`);
       setFavorites((prev) => prev.filter((song) => song._id !== songId));
-      alert("Removed from favorites");
     } catch (err) {
       console.error(err);
-      alert("Failed to remove favorite");
+      toast.error("Failed to remove favorite");
     }
   };
 
@@ -186,11 +186,21 @@ function PostProvider({ children }) {
       console.log(res.data.data);
       setSongsInPlaylist(res.data.data);
 
-      alert("Song added to playlist!");
+      toast.success("Added to playlist.", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
+      });
       setShowPlaylistModal(false);
     } catch (err) {
       console.error(err);
-      alert("Failed to add song to playlist");
+      toast.error("Failed to add song to playlist");
     }
   };
   const fetchFavoriteSongs = async () => {
@@ -202,11 +212,21 @@ function PostProvider({ children }) {
     try {
       await api.post(`/favorite/${songId}`);
 
-      alert("Added to favorites!");
+      toast.success("Added to favorites.", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
+      });
       await fetchFavoriteSongs();
     } catch (err) {
       console.error(err);
-      alert("Failed to add to favorites");
+      toast.error("Failed to add to favorites");
     }
   };
 
@@ -255,7 +275,7 @@ function PostProvider({ children }) {
       setSongsInPlaylist(res.data.data);
     } catch (err) {
       console.error(err);
-      alert("Failed to load playlist");
+      toast.error("Failed to load playlist");
     }
     setViewingPlaylist(playlist);
   };
@@ -291,9 +311,20 @@ function PostProvider({ children }) {
       const res = await api.get("/me");
       setUser(res.data.data);
       setShowEditModal(false);
+      toast.success("Profile updated.", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
+      });
     } catch (err) {
       console.error("Failed to update profile", err);
-      alert("Failed to update profile");
+      toast.error("Failed to update profile");
     }
   };
 
@@ -308,7 +339,7 @@ function PostProvider({ children }) {
     e.preventDefault();
 
     if (!audioFile) {
-      alert("Please select an audio file");
+      toast.error("Please select an audio file");
       return;
     }
 
@@ -329,13 +360,23 @@ function PostProvider({ children }) {
         },
       });
 
-      alert("Song uploaded successfully!");
+      toast.success("Song uploaded successfully.", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
+      });
       await fetchSongs();
       // const userRes = await api.get("/me");
       // setUser(userRes.data.data);
     } catch (err) {
       console.error(err);
-      alert(err?.response?.data?.message || "Upload failed");
+      toast.error("Upload failed");
     }
   };
 
@@ -360,7 +401,17 @@ function PostProvider({ children }) {
         },
       });
 
-      alert("Playlist created!");
+      toast.success("Playlist created!.", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
+      });
       setShowPlaylists((prev) => [...prev, response.data.data]);
       setNewPlaylistName("");
       setPlaylistImage();
@@ -370,7 +421,7 @@ function PostProvider({ children }) {
       await fetchAllPlaylists();
     } catch (err) {
       console.error(err);
-      alert("Failed to create playlist");
+      toast.error("Failed to create playlist");
     }
   };
 

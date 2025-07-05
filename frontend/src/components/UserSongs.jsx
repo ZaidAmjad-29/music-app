@@ -34,6 +34,11 @@ export default function UserSongs() {
 
   return (
     <>
+     {user.user.uploadedSongs.length === 0 && (
+        <div className="flex items-center justify-center min-h-screen text-gray-400 text-2xl">
+          No Songs uploaded yet.
+        </div>
+      )}
       <h3 className="text-2xl font-bold mb-4 text-white bg-gradient-to-r from-white to-purple-300 bg-clip-text">
         Uploaded Songs
       </h3>

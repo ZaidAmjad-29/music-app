@@ -11,29 +11,39 @@ import ForgotPasswordPage from "./pages/ForgotPassword";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import PlaylistDetailPage from "./pages/PlaylistDetailPage";
 import AppLayout from "./components/AppLayout";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import PageNotFound from "./pages/PageNotFound";
+
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route index element={<SignupPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-        <Route path="*" element={<PageNotFound />} />
-        <Route element={<AppLayout />}>
-          <Route path="/explore" element={<ExplorePage />} />
-          <Route path="/upload" element={<UploadPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/playlists" element={<MyPlaylistsPage />} />
-          <Route path="/favorites" element={<FavoritesPage />} />
-          <Route path="/search" element={<SearchSongsPage />} />
-          <Route path="/playlist/:id" element={<PlaylistDetailPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <>
+      <div>
+        <Toaster />
+      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<SignupPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route
+            path="/reset-password/:token"
+            element={<ResetPasswordPage />}
+          />
+          <Route path="*" element={<PageNotFound />} />
+          <Route element={<AppLayout />}>
+            <Route path="/explore" element={<ExplorePage />} />
+            <Route path="/upload" element={<UploadPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/playlists" element={<MyPlaylistsPage />} />
+            <Route path="/favorites" element={<FavoritesPage />} />
+            <Route path="/search" element={<SearchSongsPage />} />
+            <Route path="/playlist/:id" element={<PlaylistDetailPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 };
 
